@@ -18,7 +18,7 @@ window.onload = function()
   var video 		                        = document.createElement('video');
   video.autoplay                        = true;
   video.muted                           = true;
-  video.src                             = 'subliminalShape.m4v';
+  video.src                             = 'subliminalShapes.m4v';
   video.playbackRate                    = 10;
 
   function manipulation()
