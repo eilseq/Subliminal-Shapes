@@ -2,7 +2,7 @@
 Web Art Installation <br/>
 <br/>
 <br/>
-filippoguida.github.io/SubliminalShapes
+filippoguida.github.io/Subliminal-Shapes
 <br/>
 <br/>
 Filippo Guida <br/>
