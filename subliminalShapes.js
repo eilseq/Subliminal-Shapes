@@ -1,6 +1,11 @@
 //SUMBLIMINAL SHAPES #1       |       Web Art Installation
 //Filippo Guida, oct 2015     |       © All Rights Reserved
 
+//Global Variables
+var mousePar = 0;
+var touchRand = 0;
+var blinkPar = 0;
+
 //Initialize (add canvas to a background-container element in HTML file)
 window.onload = function()
 {
@@ -31,6 +36,7 @@ window.onload = function()
   	for (var i = 0; i < pixels.data.length-4; i = i + 4*4) //reduce resoluction
   	{
   		var luminance = (0.34 * pixels.data[i] + 0.5 * pixels.data[i + 1] + 0.16 * pixels.data[i + 2])/255;
+      luminance += mousePar/1000;
 
   		if (luminance < frame.param2)
   		{
@@ -50,14 +56,79 @@ window.onload = function()
   	index		 = 900+Math.floor(Math.random()*10);
 
   	frame.param0 = time;
-  	frame.param1 = [3, 6, 1, 1, 1, 16, 12][Math.floor(Math.random()*7)];
-  	frame.param2 = 0.1+0.9*Math.random();
-  	frame.param3 = Math.floor(4*Math.random());
-  	frame.param4 = Math.floor(time/2);
+  	frame.param1 = [3, 6, 1, 1, 1, 16, 12][Math.floor(Math.random()*7)] + Math.floor(blinkPar*Math.random());
+  	frame.param2 = 0.1+0.9*Math.random() + Math.floor(blinkPar*Math.random());
+  	frame.param3 = Math.floor(4*Math.random()) +  Math.floor(blinkPar*Math.random());
+  	frame.param4 = Math.floor(time/2) + Math.floor(blinkPar*Math.random());
 
     manipulation();
-  	setTimeout(function(){draw()}, time);
+  	setTimeout(function(){draw()}, time+touchRand-mousePar/100);
   }
   draw();
+
+  var timestamp, lastMouseX, lastMouseY, timeout;
+  window.onmousemove = function(e)
+  {/*
+    if (timestamp === null) {
+           timestamp = Date.now();
+           lastMouseX = e.screenX;
+           lastMouseY = e.screenY;
+           return;
+    }
+
+    var now = Date.now();
+    var dt =  now - timestamp;
+    var dx = e.screenX - lastMouseX;
+    var dy = e.screenY - lastMouseY;
+    var speedX = Math.round(dx / dt * 100);
+    var speedY = Math.round(dy / dt * 100);*/
+    mousePar = (e.screenX+e.screenY)/30;
+/*
+    timestamp = now;
+    lastMouseX = e.screenX;
+    lastMouseY = e.screenY;
+*/
+    clearTimeout(timeout);
+    timeout = setTimeout(function(){mousePar=0;}, 6*Math.pow(10, Math.floor(4*Math.random())) );
+  }
+
+  var blinkTimeout, blinkStatus = 0;
+  document.body.onmousedown = function(e)
+  {
+    function blink()
+    {
+      if (blinkStatus == 0)
+      {
+        container.style.backgroundColor       = "black";
+        ctx.fillStyle                         = "white";
+        blinkStatus = 1;
+      }
+      else
+      {
+        container.style.backgroundColor       = "white";
+        ctx.fillStyle                         = "black";
+        blinkStatus = 0;
+      }
+      blinkTimeout = setTimeout(function(){blink()}, 10);
+    }
+    blink();
+    blinkPar = Math.floor(80*Math.random());
+  }
+
+  document.body.onmouseup = function(e)
+  {
+    clearTimeout(blinkTimeout);
+    if (Math.random() <= 0.85)
+    {
+      container.style.backgroundColor       = "black";
+      ctx.fillStyle                         = "white";
+    }
+    else
+    {
+      container.style.backgroundColor       = "white";
+      ctx.fillStyle                         = "black";
+    }
+    if (Math.random() >= 0.5) blinkPar = 0;
+  }
 
 };
