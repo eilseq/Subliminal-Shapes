@@ -89,7 +89,8 @@ window.onload = function()
     lastMouseY = e.screenY;
 */
     clearTimeout(timeout);
-    timeout = setTimeout(function(){mousePar=0;}, 6*Math.pow(10, Math.floor(4*Math.random())) );
+    timeout = setTimeout(
+      function(){ if (Math.random() <= 0.85) mousePar=0; }, 6*Math.pow(10, Math.floor(4*Math.random())) );
   }
 
   var blinkTimeout, blinkStatus = 0;
